@@ -8,21 +8,21 @@ Experiment <- R6::R6Class(
     initialize = function(name = NA, expr_mat = NA, sample_info = NA, var_info = NA, rownames = FALSE) {
       self$name <- name
       self$expr_mat <- expr_mat
-      if (rownames) {
-        self$sample_info <- sample_info |>
-          tibble::rownames_to_column("sample") |>
-          tibble::as_tibble()
-        self$var_info <- var_info |>
-          tibble::rownames_to_column("variable") |>
-          tibble::as_tibble()
-      } else {
-        self$sample_info <- tibble::as_tibble(sample_info)
-        self$var_info <- tibble::as_tibble(var_info)
-      }
+      self$sample_info <- prepare_info(sample_info, rownames = rownames, col_name = "sample")
+      self$var_info <- prepare_info(var_info, rownames = rownames, col_name = "variable")
       show_data_info(self$sample_info, self$var_info)
     }
   )
 )
+
+
+prepare_info <- function(data, rownames, col_name) {
+  if (rownames) {
+    return(tibble::as_tibble(tibble::rownames_to_column(data, var = col_name)))
+  } else {
+    return(tibble::as_tibble(data))
+  }
+}
 
 
 show_data_info <- function(sample_info, var_info) {
