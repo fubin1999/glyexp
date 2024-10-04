@@ -19,6 +19,15 @@ Experiment <- R6::R6Class(
         self$sample_info <- tibble::as_tibble(sample_info)
         self$var_info <- tibble::as_tibble(var_info)
       }
+      show_data_info(self$sample_info, self$var_info)
     }
   )
 )
+
+
+show_data_info <- function(sample_info, var_info) {
+  cli::cli_alert_info("No of Samples: {.val {nrow(sample_info)}}")
+  cli::cli_alert_info("No of Variables: {.val {nrow(var_info)}}")
+  cli::cli_alert_info("Meta-data fields for samples: {.field {setdiff(colnames(sample_info), 'sample')}}")
+  cli::cli_alert_info("Meta-data fields for variables: {.field {setdiff(colnames(var_info), 'variable')}}")
+}

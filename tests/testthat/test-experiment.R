@@ -13,11 +13,13 @@ test_that("creating a new object", {
     type = c("C", "C", "H")
   )
 
-  exp <- Experiment$new(
-    name = "my_experiment",
-    expr_mat = expr_mat,
-    sample_info = sample_info,
-    var_info = var_info
+  expect_snapshot(
+    exp <- Experiment$new(
+      name = "my_experiment",
+      expr_mat = expr_mat,
+      sample_info = sample_info,
+      var_info = var_info
+    )
   )
 
   expect_equal(exp$name, "my_experiment")
