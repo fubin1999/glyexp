@@ -113,3 +113,45 @@ test_that("missing samples in sample_info raises an alert", {
     var_info = variable_info
   ), error = TRUE)
 })
+
+
+test_that("extra samples in sample_info raises an alert", {
+  expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  sample_info <- create_sample_info(c("S1", "S2", "S3", "S4"))
+  variable_info <- create_var_info(c("V1", "V2", "V3"))
+
+  expect_snapshot(Experiment$new(
+    name = "my_experiment",
+    expr_mat = expr_mat,
+    sample_info = sample_info,
+    var_info = variable_info
+  ), error = TRUE)
+})
+
+
+test_that("missing variables in var_info raises an alert", {
+  expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  sample_info <- create_sample_info(c("S1", "S2", "S3"))
+  variable_info <- create_var_info(c("V1", "V2"))
+
+  expect_snapshot(Experiment$new(
+    name = "my_experiment",
+    expr_mat = expr_mat,
+    sample_info = sample_info,
+    var_info = variable_info
+  ), error = TRUE)
+})
+
+
+test_that("extra variables in var_info raises an alert", {
+  expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  sample_info <- create_sample_info(c("S1", "S2", "S3"))
+  variable_info <- create_var_info(c("V1", "V2", "V3", "V4"))
+
+  expect_snapshot(Experiment$new(
+    name = "my_experiment",
+    expr_mat = expr_mat,
+    sample_info = sample_info,
+    var_info = variable_info
+  ), error = TRUE)
+})

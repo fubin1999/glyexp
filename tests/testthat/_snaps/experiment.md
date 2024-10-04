@@ -19,3 +19,33 @@
     Condition
       Error in `sanity_check()`:
 
+# extra samples in sample_info raises an alert
+
+    Code
+      Experiment$new(name = "my_experiment", expr_mat = expr_mat, sample_info = sample_info,
+        var_info = variable_info)
+    Message
+      x Samples are not consistent in expr_mat and sample_info.
+    Condition
+      Error in `sanity_check()`:
+
+# missing variables in var_info raises an alert
+
+    Code
+      Experiment$new(name = "my_experiment", expr_mat = expr_mat, sample_info = sample_info,
+        var_info = variable_info)
+    Message
+      x Variables are not consistent in expr_mat and var_info.
+    Condition
+      Error in `sanity_check()`:
+
+# extra variables in var_info raises an alert
+
+    Code
+      Experiment$new(name = "my_experiment", expr_mat = expr_mat, sample_info = sample_info,
+        var_info = variable_info)
+    Message
+      x Variables are not consistent in expr_mat and var_info.
+    Condition
+      Error in `sanity_check()`:
+
