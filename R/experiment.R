@@ -1,17 +1,23 @@
 Experiment <- R6::R6Class(
   "Experiment",
+
   public = list(
     name = NULL,
     expr_mat = NULL,
     sample_info = NULL,
     var_info = NULL,
+
     initialize = function(name = NA, expr_mat = NA, sample_info = NA, var_info = NA, rownames = FALSE) {
+      prepared_sample_info <- prepare_info(sample_info, rownames = rownames, col_name = "sample")
+      prepared_var_info <- prepare_info(var_info, rownames = rownames, col_name = "variable")
+      sanity_check(expr_mat, prepared_sample_info, prepared_var_info)
+      prepared_expr_mat <- expr_mat[prepared_var_info$variable, prepared_sample_info$sample]
+      show_data_info(prepared_sample_info, prepared_var_info)
+
       self$name <- name
-      self$expr_mat <- expr_mat
-      self$sample_info <- prepare_info(sample_info, rownames = rownames, col_name = "sample")
-      self$var_info <- prepare_info(var_info, rownames = rownames, col_name = "variable")
-      sanity_check(self$expr_mat, self$sample_info, self$var_info)
-      show_data_info(self$sample_info, self$var_info)
+      self$expr_mat <- prepared_expr_mat
+      self$sample_info <- prepared_sample_info
+      self$var_info <- prepared_var_info
     }
   )
 )

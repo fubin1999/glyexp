@@ -159,3 +159,26 @@ test_that("extra variables in var_info raises an alert", {
     var_info = variable_info
   ), error = TRUE)
 })
+
+
+test_that("expr_mat reordered according to sample_info and var_info", {
+  expr_mat <- matrix(1:9, nrow = 3, byrow = TRUE)
+  colnames(expr_mat) <- c("S1", "S2", "S3")
+  rownames(expr_mat) <- c("V1", "V2", "V3")
+  sample_info <- create_sample_info(c("S3", "S1", "S2"))
+  variable_info <- create_var_info(c("V2", "V3", "V1"))
+
+  suppressMessages(
+    exp <- Experiment$new(
+      name = "my_experiment",
+      expr_mat = expr_mat,
+      sample_info = sample_info,
+      var_info = variable_info
+    )
+  )
+
+  expected_mat <- matrix(c(6, 4, 5, 9, 7, 8, 3, 1, 2), nrow = 3, byrow = TRUE)
+  colnames(expected_mat) <- c("S3", "S1", "S2")
+  rownames(expected_mat) <- c("V2", "V3", "V1")
+  expect_equal(exp$expr_mat, expected_mat)
+})
