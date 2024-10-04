@@ -10,7 +10,7 @@ test_that("creating a new object", {
   )
   var_info <- tibble::tibble(
     variable = variables,
-    type = c("H5N4S1", "H5N4F1", "H5N4F1S1")
+    type = c("C", "C", "H")
   )
 
   exp <- Experiment$new(
@@ -39,7 +39,7 @@ test_that("data.frames converted to tibbles", {
   )
   var_info <- data.frame(
     variable = variables,
-    type = c("H5N4S1", "H5N4F1", "H5N4F1S1")
+    type = c("C", "C", "H")
   )
 
   exp <- Experiment$new(
@@ -55,7 +55,7 @@ test_that("data.frames converted to tibbles", {
   )
   expected_var_info <- tibble::tibble(
     variable = variables,
-    type = c("H5N4S1", "H5N4F1", "H5N4F1S1")
+    type = c("C", "C", "H")
   )
   expect_equal(exp$sample_info, expected_sample_info)
   expect_equal(exp$var_info, expected_var_info)
@@ -73,7 +73,7 @@ test_that("rownames of data.frames are kept", {
     row.names = samples
   )
   var_info <- data.frame(
-    type = c("H5N4S1", "H5N4F1", "H5N4F1S1"),
+    type = c("C", "C", "H"),
     row.names = variables
   )
 
@@ -91,7 +91,7 @@ test_that("rownames of data.frames are kept", {
   )
   expected_var_info <- tibble::tibble(
     variable = variables,
-    type = c("H5N4S1", "H5N4F1", "H5N4F1S1")
+    type = c("C", "C", "H")
   )
   expect_equal(exp$sample_info, expected_sample_info)
   expect_equal(exp$var_info, expected_var_info)
