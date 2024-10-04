@@ -11,14 +11,14 @@ create_expr_mat <- function(samples, variables) {
 create_sample_info <- function(samples) {
   tibble::tibble(
     sample = samples,
-    group = c("A", "A", "B")
+    group = rep("A", length(samples))
   )
 }
 
 create_var_info <- function(variables) {
   tibble::tibble(
     variable = variables,
-    type = c("C", "C", "H")
+    type = rep("B", length(variables))
   )
 }
 
@@ -26,7 +26,7 @@ create_var_info <- function(variables) {
 test_that("creating a new object", {
   samples <- c("S1", "S2", "S3")
   variables <- c("V1", "V2", "V3")
-  expr_mat <- create_expr_mat(variables, samples)
+  expr_mat <- create_expr_mat(samples, variables)
   sample_info <- create_sample_info(samples)
   var_info <- create_var_info(variables)
 
@@ -52,11 +52,11 @@ test_that("data.frames converted to tibbles", {
   expr_mat <- create_expr_mat(samples, variables)
   sample_info <- data.frame(
     sample = samples,
-    group = c("A", "A", "B")
+    group = rep("A", 3)
   )
   var_info <- data.frame(
     variable = variables,
-    type = c("C", "C", "H")
+    type = rep("B", 3)
   )
 
   exp <- Experiment$new(
@@ -78,11 +78,11 @@ test_that("rownames of data.frames are kept", {
   variables <- c("V1", "V2", "V3")
   expr_mat <- create_expr_mat(samples, variables)
   sample_info <- data.frame(
-    group = c("A", "A", "B"),
+    group = rep("A", 3),
     row.names = samples
   )
   var_info <- data.frame(
-    type = c("C", "C", "H"),
+    type = rep("B", 3),
     row.names = variables
   )
 
@@ -100,3 +100,16 @@ test_that("rownames of data.frames are kept", {
   expect_equal(exp$var_info, expected_var_info)
 })
 
+
+test_that("missing samples in sample_info raises an alert", {
+  expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  sample_info <- create_sample_info(c("S1", "S2"))
+  variable_info <- create_var_info(c("V1", "V2", "V3"))
+
+  expect_snapshot(Experiment$new(
+    name = "my_experiment",
+    expr_mat = expr_mat,
+    sample_info = sample_info,
+    var_info = variable_info
+  ), error = TRUE)
+})

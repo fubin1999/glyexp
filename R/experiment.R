@@ -10,6 +10,7 @@ Experiment <- R6::R6Class(
       self$expr_mat <- expr_mat
       self$sample_info <- prepare_info(sample_info, rownames = rownames, col_name = "sample")
       self$var_info <- prepare_info(var_info, rownames = rownames, col_name = "variable")
+      sanity_check(self$expr_mat, self$sample_info, self$var_info)
       show_data_info(self$sample_info, self$var_info)
     }
   )
@@ -22,6 +23,20 @@ prepare_info <- function(data, rownames, col_name) {
   } else {
     return(tibble::as_tibble(data))
   }
+}
+
+
+sanity_check <- function(expr_mat, sample_info, var_info) {
+  pass_check <- TRUE
+  if (!setequal(colnames(expr_mat), sample_info$sample)) {
+    cli::cli_alert_danger("Samples are not consistent in {.field expr_mat} and {.field sample_info}.")
+    pass_check <- FALSE
+  }
+  if (!setequal(rownames(expr_mat), var_info$variable)) {
+    cli::cli_alert_danger("Variables are not consistent in {.field expr_mat} and {.field var_info}.")
+    pass_check <- FALSE
+  }
+  if (!pass_check) stop()
 }
 
 

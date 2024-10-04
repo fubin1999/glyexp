@@ -9,3 +9,13 @@
       i Meta-data fields for samples: group
       i Meta-data fields for variables: type
 
+# missing samples in sample_info raises an alert
+
+    Code
+      Experiment$new(name = "my_experiment", expr_mat = expr_mat, sample_info = sample_info,
+        var_info = variable_info)
+    Message
+      x Samples are not consistent in expr_mat and sample_info.
+    Condition
+      Error in `sanity_check()`:
+
