@@ -59,11 +59,13 @@ test_that("data.frames converted to tibbles", {
     type = rep("B", 3)
   )
 
-  exp <- Experiment$new(
-    name = "my_experiment",
-    expr_mat = expr_mat,
-    sample_info = sample_info,
-    var_info = var_info
+  suppressMessages(
+    exp <- Experiment$new(
+      name = "my_experiment",
+      expr_mat = expr_mat,
+      sample_info = sample_info,
+      var_info = var_info
+    )
   )
 
   expected_sample_info <- create_sample_info(samples)
@@ -86,12 +88,14 @@ test_that("rownames of data.frames are kept", {
     row.names = variables
   )
 
-  exp <- Experiment$new(
-    name = "my_experiment",
-    expr_mat = expr_mat,
-    sample_info = sample_info,
-    var_info = var_info,
-    rownames = TRUE
+  suppressMessages(
+    exp <- Experiment$new(
+      name = "my_experiment",
+      expr_mat = expr_mat,
+      sample_info = sample_info,
+      var_info = var_info,
+      rownames = TRUE
+    )
   )
 
   expected_sample_info <- create_sample_info(samples)
