@@ -92,7 +92,7 @@ Experiment <- R6::R6Class(
 #'
 #' @return An [Experiment] object.
 #' @export
-create_experiment <- function(name = NA, expr_mat = NA, sample_info = NA, var_info = NA, rownames = FALSE) {
+create_experiment <- function(name, expr_mat, sample_info, var_info, rownames = FALSE) {
   Experiment$new(
     name = name,
     expr_mat = expr_mat,
