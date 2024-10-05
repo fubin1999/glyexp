@@ -33,5 +33,5 @@ converted to the first column (with names of "sample" and "variable", respective
 An \link{Experiment} object.
 }
 \description{
-This function is a shortcut to \code{\link[=Experiment$new]{Experiment$new()}}.
+Function that Creates a New \link{Experiment} Object
 }

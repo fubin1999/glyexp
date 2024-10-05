@@ -78,8 +78,6 @@ Experiment <- R6::R6Class(
 
 #' Function that Creates a New [Experiment] Object
 #'
-#' This function is a shortcut to [Experiment$new()].
-#'
 #' @param name Name of the experiment.
 #' @param expr_mat Expression matrix. Rows are variables and columns are samples.
 #' @param sample_info Sample information, a tibble or a data.frame.
