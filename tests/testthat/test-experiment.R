@@ -182,3 +182,22 @@ test_that("expr_mat reordered according to sample_info and var_info", {
   rownames(expected_mat) <- c("V2", "V3", "V1")
   expect_equal(exp$expr_mat, expected_mat)
 })
+
+
+test_that("creates an experiment by funtion", {
+  expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  sample_info <- create_sample_info(c("S1", "S2", "S3"))
+  var_info <- create_var_info(c("V1", "V2", "V3"))
+
+  exp <- create_experiment(
+    name = "my_experiment",
+    expr_mat = expr_mat,
+    sample_info = sample_info,
+    var_info = var_info
+  )
+
+  expect_equal(exp$name, "my_experiment")
+  expect_equal(exp$expr_mat, expr_mat)
+  expect_equal(exp$sample_info, sample_info)
+  expect_equal(exp$var_info, var_info)
+})
