@@ -17,21 +17,6 @@ automatically affect both the expression matrix and the sample information.
 \if{html}{\out{<div class="r6-fields">}}
 \describe{
 \item{\code{name}}{Name of the experiment.}
-
-\item{\code{expr_mat}}{Expression matrix.
-The rows are variables and the columns are samples.}
-
-\item{\code{sample_info}}{Sample information.
-A tibble with the first conserved column "sample",
-and the rest columns as meta data of samples,
-e.g. "group", "batch", etc.
-The "sample" column equals to the column names of \code{expr_mat}.}
-
-\item{\code{var_info}}{Variable information.
-A tibble with the first conserved column "variable",
-and the rest columns as meta data of variables,
-e.g. "peptide", "protein", "glycan_composition", etc.
-The "variable" column equals to the row names of \code{expr_mat}.}
 }
 \if{html}{\out{</div>}}
 }
@@ -39,6 +24,9 @@ The "variable" column equals to the row names of \code{expr_mat}.}
 \subsection{Public methods}{
 \itemize{
 \item \href{#method-Experiment-new}{\code{Experiment$new()}}
+\item \href{#method-Experiment-get_expr_mat}{\code{Experiment$get_expr_mat()}}
+\item \href{#method-Experiment-get_sample_info}{\code{Experiment$get_sample_info()}}
+\item \href{#method-Experiment-get_var_info}{\code{Experiment$get_var_info()}}
 \item \href{#method-Experiment-clone}{\code{Experiment$clone()}}
 }
 }
@@ -77,6 +65,54 @@ If TRUE, the row names of \code{sample_info} and \code{sample_info} will be
 converted to the first column (with names of "sample" and "variable", respectively).}
 }
 \if{html}{\out{</div>}}
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Experiment-get_expr_mat"></a>}}
+\if{latex}{\out{\hypertarget{method-Experiment-get_expr_mat}{}}}
+\subsection{Method \code{get_expr_mat()}}{
+Get a copy of the expression matrix.
+The rows are variables and the columns are samples.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Experiment$get_expr_mat()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A copy of the expression matrix.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Experiment-get_sample_info"></a>}}
+\if{latex}{\out{\hypertarget{method-Experiment-get_sample_info}{}}}
+\subsection{Method \code{get_sample_info()}}{
+Get a copy of the sample information tibble.
+This is a tibble with the first conserved column "sample",
+and the rest columns as meta data of samples,
+e.g. "group", "batch", etc.
+The "sample" column equals to the column names of \code{expr_mat}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Experiment$get_sample_info()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A copy of the sample information tibble.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Experiment-get_var_info"></a>}}
+\if{latex}{\out{\hypertarget{method-Experiment-get_var_info}{}}}
+\subsection{Method \code{get_var_info()}}{
+Get a copy of the variable information tibble.
+This is a tibble with the first conserved column "variable",
+and the rest columns as meta data of variables,
+e.g. "peptide", "protein", "glycan_composition", etc.
+The "variable" column equals to the row names of \code{expr_mat}.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Experiment$get_var_info()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A copy of the variable information tibble.
 }
 }
 \if{html}{\out{<hr>}}

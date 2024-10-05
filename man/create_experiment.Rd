@@ -2,7 +2,7 @@
 % Please edit documentation in R/experiment.R
 \name{create_experiment}
 \alias{create_experiment}
-\title{Function that Creates a New \link{Experiment} object}
+\title{Function that Creates a New \link{Experiment} Object}
 \usage{
 create_experiment(
   name = NA,
@@ -34,7 +34,4 @@ An \link{Experiment} object.
 }
 \description{
 This function is a shortcut to \code{\link[=Experiment$new]{Experiment$new()}}.
-}
-\examples{
-create_experiment("my_experiment", expr_mat, sample_info, var_info)
 }

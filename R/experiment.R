@@ -17,24 +17,6 @@ Experiment <- R6::R6Class(
     #' @field name Name of the experiment.
     name = NULL,
 
-    #' @field expr_mat Expression matrix.
-    #' The rows are variables and the columns are samples.
-    expr_mat = NULL,
-
-    #' @field sample_info Sample information.
-    #' A tibble with the first conserved column "sample",
-    #' and the rest columns as meta data of samples,
-    #' e.g. "group", "batch", etc.
-    #' The "sample" column equals to the column names of `expr_mat`.
-    sample_info = NULL,
-
-    #' @field var_info Variable information.
-    #' A tibble with the first conserved column "variable",
-    #' and the rest columns as meta data of variables,
-    #' e.g. "peptide", "protein", "glycan_composition", etc.
-    #' The "variable" column equals to the row names of `expr_mat`.
-    var_info = NULL,
-
     #' @description
     #' Create a new experiment object.
     #' @param name Name of the experiment.
@@ -56,10 +38,40 @@ Experiment <- R6::R6Class(
       show_data_info(prepared_sample_info, prepared_var_info)
 
       self$name <- name
-      self$expr_mat <- prepared_expr_mat
-      self$sample_info <- prepared_sample_info
-      self$var_info <- prepared_var_info
-    }
+      private$expr_mat <- prepared_expr_mat
+      private$sample_info <- prepared_sample_info
+      private$var_info <- prepared_var_info
+    },
+
+    #' @description
+    #' Get a copy of the expression matrix.
+    #' The rows are variables and the columns are samples.
+    #' @return A copy of the expression matrix.
+    get_expr_mat = function() as.matrix(private$expr_mat),
+
+    #' @description
+    #' Get a copy of the sample information tibble.
+    #' This is a tibble with the first conserved column "sample",
+    #' and the rest columns as meta data of samples,
+    #' e.g. "group", "batch", etc.
+    #' The "sample" column equals to the column names of `expr_mat`.
+    #' @return A copy of the sample information tibble.
+    get_sample_info = function() tibble::as_tibble(private$sample_info),
+
+    #' @description
+    #' Get a copy of the variable information tibble.
+    #' This is a tibble with the first conserved column "variable",
+    #' and the rest columns as meta data of variables,
+    #' e.g. "peptide", "protein", "glycan_composition", etc.
+    #' The "variable" column equals to the row names of `expr_mat`.
+    #' @return A copy of the variable information tibble.
+    get_var_info = function() tibble::as_tibble(private$var_info)
+  ),
+
+  private = list(
+    expr_mat = NULL,
+    sample_info = NULL,
+    var_info = NULL
   )
 )
 
@@ -82,9 +94,6 @@ Experiment <- R6::R6Class(
 #'
 #' @return An [Experiment] object.
 #' @export
-#'
-#' @examples
-#' create_experiment("my_experiment", expr_mat, sample_info, var_info)
 create_experiment <- function(name = NA, expr_mat = NA, sample_info = NA, var_info = NA, rownames = FALSE) {
   Experiment$new(
     name = name,
