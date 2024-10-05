@@ -1,12 +1,53 @@
+#' R6 Class for a Glycoproteomics or Glycomics Experiment
+#'
+#' @description
+#' A class managing expression matrix, sample information, and variable information.
+#'
+#' @details
+#' This class synchronizes three data types commonly used in a glycproteomics
+#' or glycomics research: the expression matrix, the sample information, and
+#' the variable information. It helps ensure that the three datasets altered
+#' in sync. For example, filtering samples based on some conditions will
+#' automatically affect both the expression matrix and the sample information.
 Experiment <- R6::R6Class(
   "Experiment",
 
   public = list(
+
+    #' @field name Name of the experiment.
     name = NULL,
+
+    #' @field expr_mat Expression matrix.
+    #' The rows are variables and the columns are samples.
     expr_mat = NULL,
+
+    #' @field sample_info Sample information.
+    #' A tibble with the first conserved column "sample",
+    #' and the rest columns as meta data of samples,
+    #' e.g. "group", "batch", etc.
+    #' The "sample" column equals to the column names of `expr_mat`.
     sample_info = NULL,
+
+    #' @field var_info Variable information.
+    #' A tibble with the first conserved column "variable",
+    #' and the rest columns as meta data of variables,
+    #' e.g. "peptide", "protein", "glycan_composition", etc.
+    #' The "variable" column equals to the row names of `expr_mat`.
     var_info = NULL,
 
+    #' @description
+    #' Create a new experiment object.
+    #' @param name Name of the experiment.
+    #' @param expr_mat Expression matrix. Rows are variables and columns are samples.
+    #' @param sample_info Sample information, a tibble or a data.frame.
+    #'    The first column should be "sample", corresponding to the column names of `expr_mat`.
+    #'    The order of samples doesn't matter.
+    #' @param var_info Variable information, a tibble or a data.frame.
+    #'    The first column should be "variable", corresponding to the row names of `expr_mat`.
+    #'    The order of variables doesn't matter.
+    #' @param rownames Whether rownames of `sample_info` and `var_info` should be used.
+    #'    If TRUE, the row names of `sample_info` and `sample_info` will be
+    #'    converted to the first column (with names of "sample" and "variable", respectively).
     initialize = function(name = NA, expr_mat = NA, sample_info = NA, var_info = NA, rownames = FALSE) {
       prepared_sample_info <- prepare_info(sample_info, rownames = rownames, col_name = "sample")
       prepared_var_info <- prepare_info(var_info, rownames = rownames, col_name = "variable")
