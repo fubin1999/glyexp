@@ -74,6 +74,29 @@ Experiment <- R6::R6Class(
     #' @return A copy of the variable information tibble.
     get_var_info = function() {
       tibble::as_tibble(private$var_info)
+    },
+
+    #' @description
+    #' Filter samples based on conditions.
+    #' This function filters samples based on conditions specified in the [dplyr::filter()] function.
+    #' For example, `filter_samples(group == "A")` will keep samples with "group" equal to "A".
+    #' The [Experiment] object will be updated in place.
+    #' The [Experiment] object will be returned invisibly to allow chaining.
+    #' @param ... Conditions for filtering samples, passed to [dplyr::filter()].
+    #' @return The [Experiment] object.
+    filter_samples = function(...) {
+      selected_samples <- private$sample_info %>%
+        dplyr::filter(...) %>%
+        dplyr::pull(sample)
+      if (length(selected_samples) == 0) {
+        cli::cli_alert_warning("No sample meets the condition(s). An empty Experiment object is returned.")
+      } else {
+        cli::cli_alert_info("{.val {length(selected_samples)}} samples are selected.")
+      }
+      private$expr_mat <- private$expr_mat[, selected_samples]
+      private$sample_info <- private$sample_info %>%
+        dplyr::filter(sample %in% selected_samples)
+      invisible(self)
     }
   ),
 

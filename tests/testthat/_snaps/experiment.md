@@ -49,3 +49,17 @@
     Condition
       Error in `sanity_check()`:
 
+# filter samples
+
+    Code
+      return_value <- exp$filter_samples(sample %in% c("S1", "S2"))
+    Message
+      i 2 samples are selected.
+
+# filter samples when no samples selected
+
+    Code
+      return_value <- exp$filter_samples(sample %in% c("S4", "S5"))
+    Message
+      ! No sample meets the condition(s). An empty Experiment object is returned.
+

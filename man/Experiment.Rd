@@ -27,6 +27,7 @@ automatically affect both the expression matrix and the sample information.
 \item \href{#method-Experiment-get_expr_mat}{\code{Experiment$get_expr_mat()}}
 \item \href{#method-Experiment-get_sample_info}{\code{Experiment$get_sample_info()}}
 \item \href{#method-Experiment-get_var_info}{\code{Experiment$get_var_info()}}
+\item \href{#method-Experiment-filter_samples}{\code{Experiment$filter_samples()}}
 \item \href{#method-Experiment-clone}{\code{Experiment$clone()}}
 }
 }
@@ -116,6 +117,30 @@ A function \code{\link[=get_var_info]{get_var_info()}} is also provided for this
 
 \subsection{Returns}{
 A copy of the variable information tibble.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Experiment-filter_samples"></a>}}
+\if{latex}{\out{\hypertarget{method-Experiment-filter_samples}{}}}
+\subsection{Method \code{filter_samples()}}{
+Filter samples based on conditions.
+This function filters samples based on conditions specified in the \code{\link[dplyr:filter]{dplyr::filter()}} function.
+For example, \code{filter_samples(group == "A")} will keep samples with "group" equal to "A".
+The \link{Experiment} object will be updated in place.
+The \link{Experiment} object will be returned invisibly to allow chaining.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Experiment$filter_samples(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Conditions for filtering samples, passed to \code{\link[dplyr:filter]{dplyr::filter()}}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The \link{Experiment} object.
 }
 }
 \if{html}{\out{<hr>}}

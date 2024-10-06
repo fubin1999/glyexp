@@ -18,5 +18,9 @@ RoxygenNote: 7.3.2
 URL: https://fubin1999.github.io/glyexp/
 Imports: 
     cli,
+    dplyr,
     R6,
+    rlang (>= 1.1.4),
     tibble
+Remotes:  
+    r-lib/rlang

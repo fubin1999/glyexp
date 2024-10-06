@@ -252,14 +252,44 @@ test_that("getter functions work", {
   expr_mat <- create_expr_mat(samples, variables)
   sample_info <- create_sample_info(samples)
   var_info <- create_var_info(variables)
-  exp <- Experiment$new(
-    name = "my_experiment",
-    expr_mat = expr_mat,
-    sample_info = sample_info,
-    var_info = var_info
+  suppressMessages(
+    exp <- Experiment$new(
+      name = "my_experiment",
+      expr_mat = expr_mat,
+      sample_info = sample_info,
+      var_info = var_info
+    )
   )
 
   expect_equal(get_expr_mat(exp), expr_mat)
   expect_equal(get_sample_info(exp), sample_info)
   expect_equal(get_var_info(exp), var_info)
+})
+
+
+test_that("filter samples", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(return_value <- exp$filter_samples(sample %in% c("S1", "S2")))
+
+  # should return self
+  expect_true(rlang::is_reference(return_value, exp))
+  # sample_info updated
+  expect_equal(exp$get_sample_info()$sample, c("S1", "S2"))
+  # expr_mat updated accordingly
+  expect_equal(colnames(exp$get_expr_mat()), c("S1", "S2"))
+})
+
+
+test_that("filter samples when no samples selected", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(return_value <- exp$filter_samples(sample %in% c("S4", "S5")))
+
+  # should return self
+  expect_true(rlang::is_reference(return_value, exp))
+  # sample_info updated
+  expect_equal(exp$get_sample_info()$sample, character(0))
+  # expr_mat updated accordingly
+  expect_equal(colnames(exp$get_expr_mat()), NULL)
 })
