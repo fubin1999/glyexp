@@ -73,6 +73,7 @@ converted to the first column (with names of "sample" and "variable", respective
 \subsection{Method \code{get_expr_mat()}}{
 Get a copy of the expression matrix.
 The rows are variables and the columns are samples.
+A function \code{\link[=get_expr_mat]{get_expr_mat()}} is also provided for this purpose.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Experiment$get_expr_mat()}\if{html}{\out{</div>}}
 }
@@ -90,6 +91,7 @@ This is a tibble with the first conserved column "sample",
 and the rest columns as meta data of samples,
 e.g. "group", "batch", etc.
 The "sample" column equals to the column names of \code{expr_mat}.
+A function \code{\link[=get_sample_info]{get_sample_info()}} is also provided for this purpose.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Experiment$get_sample_info()}\if{html}{\out{</div>}}
 }
@@ -107,6 +109,7 @@ This is a tibble with the first conserved column "variable",
 and the rest columns as meta data of variables,
 e.g. "peptide", "protein", "glycan_composition", etc.
 The "variable" column equals to the row names of \code{expr_mat}.
+A function \code{\link[=get_var_info]{get_var_info()}} is also provided for this purpose.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Experiment$get_var_info()}\if{html}{\out{</div>}}
 }
