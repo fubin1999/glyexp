@@ -29,6 +29,8 @@ automatically affect both the expression matrix and the sample information.
 \item \href{#method-Experiment-get_var_info}{\code{Experiment$get_var_info()}}
 \item \href{#method-Experiment-filter_samples}{\code{Experiment$filter_samples()}}
 \item \href{#method-Experiment-filter_variables}{\code{Experiment$filter_variables()}}
+\item \href{#method-Experiment-mutate_samples}{\code{Experiment$mutate_samples()}}
+\item \href{#method-Experiment-mutate_variables}{\code{Experiment$mutate_variables()}}
 \item \href{#method-Experiment-clone}{\code{Experiment$clone()}}
 }
 }
@@ -167,6 +169,24 @@ The \link{Experiment} object will be returned invisibly to allow chaining.
 \subsection{Returns}{
 The \link{Experiment} object.
 }
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Experiment-mutate_samples"></a>}}
+\if{latex}{\out{\hypertarget{method-Experiment-mutate_samples}{}}}
+\subsection{Method \code{mutate_samples()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Experiment$mutate_samples(...)}\if{html}{\out{</div>}}
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Experiment-mutate_variables"></a>}}
+\if{latex}{\out{\hypertarget{method-Experiment-mutate_variables}{}}}
+\subsection{Method \code{mutate_variables()}}{
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Experiment$mutate_variables(...)}\if{html}{\out{</div>}}
+}
+
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Experiment-clone"></a>}}

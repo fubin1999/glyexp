@@ -1,43 +1,3 @@
-# Helper functions----
-create_expr_mat <- function(samples, variables) {
-  n_row <- length(variables)
-  n_col <- length(samples)
-  mat <- matrix(runif(n_row * n_col), nrow = n_row)
-  rownames(mat) <- variables
-  colnames(mat) <- samples
-  mat
-}
-
-create_sample_info <- function(samples) {
-  tibble::tibble(
-    sample = samples,
-    group = rep("A", length(samples))
-  )
-}
-
-create_var_info <- function(variables) {
-  tibble::tibble(
-    variable = variables,
-    type = rep("B", length(variables))
-  )
-}
-
-create_test_exp <- function(samples, variables) {
-  expr_mat <- create_expr_mat(samples, variables)
-  sample_info <- create_sample_info(samples)
-  var_info <- create_var_info(variables)
-  suppressMessages(
-    exp <- create_experiment(
-      name = "my_experiment",
-      expr_mat = expr_mat,
-      sample_info = sample_info,
-      var_info = var_info
-    )
-  )
-  exp
-}
-
-# Real tests-----
 test_that("creating a new object", {
   samples <- c("S1", "S2", "S3")
   variables <- c("V1", "V2", "V3")
@@ -199,27 +159,6 @@ test_that("expr_mat reordered according to sample_info and var_info", {
 })
 
 
-test_that("creates an experiment by funtion", {
-  expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
-  sample_info <- create_sample_info(c("S1", "S2", "S3"))
-  var_info <- create_var_info(c("V1", "V2", "V3"))
-
-  suppressMessages(
-    exp <- create_experiment(
-      name = "my_experiment",
-      expr_mat = expr_mat,
-      sample_info = sample_info,
-      var_info = var_info
-    )
-  )
-
-  expect_equal(exp$name, "my_experiment")
-  expect_equal(exp$get_expr_mat(), expr_mat)
-  expect_equal(exp$get_sample_info(), sample_info)
-  expect_equal(exp$get_var_info(), var_info)
-})
-
-
 test_that("getting data copies instead of original data", {
   expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
   expr_mat[1, 1] <- 1
@@ -243,27 +182,6 @@ test_that("getting data copies instead of original data", {
   expect_equal(exp$get_sample_info()$sample, c("S1", "S2", "S3"))
   expect_equal(exp$get_var_info()$variable, c("V1", "V2", "V3"))
   expect_equal(exp$get_expr_mat()[1, 1], 1)
-})
-
-
-test_that("getter functions work", {
-  samples <- c("S1", "S2", "S3")
-  variables <- c("V1", "V2", "V3")
-  expr_mat <- create_expr_mat(samples, variables)
-  sample_info <- create_sample_info(samples)
-  var_info <- create_var_info(variables)
-  suppressMessages(
-    exp <- Experiment$new(
-      name = "my_experiment",
-      expr_mat = expr_mat,
-      sample_info = sample_info,
-      var_info = var_info
-    )
-  )
-
-  expect_equal(get_expr_mat(exp), expr_mat)
-  expect_equal(get_sample_info(exp), sample_info)
-  expect_equal(get_var_info(exp), var_info)
 })
 
 
@@ -334,54 +252,4 @@ test_that("filtering variables using non-existing columns raises an error", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
   expect_snapshot(exp$filter_variables(non_existing_column == 1), error = TRUE)
-})
-
-
-test_that("filter_samples function works", {
-  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
-
-  expect_snapshot(new_exp <- filter_samples(exp, sample %in% c("S1", "S2")))
-
-  # new object created
-  expect_false(rlang::is_reference(new_exp, exp))
-  # sample_info updated
-  expect_equal(new_exp$get_sample_info()$sample, c("S1", "S2"))
-  # expr_mat updated accordingly
-  expect_equal(colnames(new_exp$get_expr_mat()), c("S1", "S2"))
-})
-
-
-test_that("filter_samples doesn't affect old exp", {
-  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
-  suppressMessages(
-    new_exp <- filter_samples(exp, sample %in% c("S1", "S2"))
-  )
-
-  # original object not changed
-  expect_equal(exp$get_sample_info()$sample, c("S1", "S2", "S3"))
-})
-
-
-test_that("filter_variables function works", {
-  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
-
-  expect_snapshot(new_exp <- filter_variables(exp, variable %in% c("V1", "V2")))
-
-  # new object created
-  expect_false(rlang::is_reference(new_exp, exp))
-  # var_info updated
-  expect_equal(new_exp$get_var_info()$variable, c("V1", "V2"))
-  # expr_mat updated accordingly
-  expect_equal(rownames(new_exp$get_expr_mat()), c("V1", "V2"))
-})
-
-
-test_that("filter_variables doesn't affect old exp", {
-  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
-  suppressMessages(
-    new_exp <- filter_variables(exp, variable %in% c("V1", "V2"))
-  )
-
-  # original object not changed
-  expect_equal(exp$get_var_info()$variable, c("V1", "V2", "V3"))
 })
