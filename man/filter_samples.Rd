@@ -12,7 +12,7 @@ filter_samples(exp, ...)
 \item{...}{Conditions for filtering samples, passed to \code{\link[dplyr:filter]{dplyr::filter()}}.}
 }
 \value{
-The \link{Experiment} object.
+The new \link{Experiment} object.
 }
 \description{
 Filter samples based on conditions specified in the \code{\link[dplyr:filter]{dplyr::filter()}} function.

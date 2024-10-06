@@ -15,7 +15,7 @@
 #' @param exp The [Experiment] object.
 #' @param ... Conditions for filtering samples, passed to [dplyr::filter()].
 #'
-#' @return The [Experiment] object.
+#' @return The new [Experiment] object.
 #' @export
 filter_samples <- function(exp, ...) {
   new_exp <- exp$clone()
@@ -40,7 +40,7 @@ filter_samples <- function(exp, ...) {
 #' @param exp The [Experiment] object.
 #' @param ... Conditions for filtering variables, passed to [dplyr::filter()].
 #'
-#' @return The [Experiment] object.
+#' @return The new [Experiment] object.
 #' @export
 filter_variables <- function(exp, ...) {
   new_exp <- exp$clone()
