@@ -266,7 +266,7 @@ show_data_info <- function(sample_info, var_info) {
 # with the `error` argument tailored for handling missing column error
 # of a `dplyr` function.
 # Used in `Experiment$filter()` and `Experiment$mutate()` private methods.
-try_dplyr = function(expr, info_df, info) {
+try_dplyr <- function(expr, info_df, info) {
   tryCatch(
     # `expr` is evaluated in the parent frame, thanks to the lazy evaluation.
     # This allows the client code run any dplyr functions in the parent frame.
