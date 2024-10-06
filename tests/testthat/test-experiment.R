@@ -253,3 +253,41 @@ test_that("filtering variables using non-existing columns raises an error", {
 
   expect_snapshot(exp$filter_variables(non_existing_column == 1), error = TRUE)
 })
+
+
+test_that("mutate samples", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(return_value <- exp$mutate_samples(new_sample = paste0("new_", sample)))
+
+  # should return self
+  expect_true(rlang::is_reference(return_value, exp))
+  # sample_info updated
+  expect_equal(exp$get_sample_info()$new_sample, paste0("new_", c("S1", "S2", "S3")))
+})
+
+
+test_that("mutating samples using non-existing columns raises an error", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(exp$mutate_samples(new_col = non_existing_column), error = TRUE)
+})
+
+
+test_that("mutate variables", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(return_value <- exp$mutate_variables(new_variable = paste0("new_", variable)))
+
+  # should return self
+  expect_true(rlang::is_reference(return_value, exp))
+  # var_info updated
+  expect_equal(exp$get_var_info()$new_variable, paste0("new_", c("V1", "V2", "V3")))
+})
+
+
+test_that("mutating variables using non-existing columns raises an error", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(exp$mutate_variables(new_col = non_existing_column), error = TRUE)
+})

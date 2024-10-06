@@ -174,19 +174,51 @@ The \link{Experiment} object.
 \if{html}{\out{<a id="method-Experiment-mutate_samples"></a>}}
 \if{latex}{\out{\hypertarget{method-Experiment-mutate_samples}{}}}
 \subsection{Method \code{mutate_samples()}}{
+Mutate sample information.
+This function mutates the sample information tibble using \code{\link[dplyr:mutate]{dplyr::mutate()}}.
+For example, \verb{mutate_samples(new_group = if_else(new_col = 1)}
+will add a new column "new_group" to the sample information tibble.
+The \link{Experiment} object will be updated in place.
+The \link{Experiment} object will be returned invisibly to allow chaining.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Experiment$mutate_samples(...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Mutations for the sample information tibble, passed to \code{\link[dplyr:mutate]{dplyr::mutate()}}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The \link{Experiment} object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Experiment-mutate_variables"></a>}}
 \if{latex}{\out{\hypertarget{method-Experiment-mutate_variables}{}}}
 \subsection{Method \code{mutate_variables()}}{
+Mutate variable information.
+This function mutates the variable information tibble using \code{\link[dplyr:mutate]{dplyr::mutate()}}.
+For example, \verb{mutate_variables(new_type = if_else(new_col = 1)}
+will add a new column "new_type" to the variable information tibble.
+The \link{Experiment} object will be updated in place.
+The \link{Experiment} object will be returned invisibly to allow chaining.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Experiment$mutate_variables(...)}\if{html}{\out{</div>}}
 }
 
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Mutations for the variable information tibble, passed to \code{\link[dplyr:mutate]{dplyr::mutate()}}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Returns}{
+The \link{Experiment} object.
+}
 }
 \if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Experiment-clone"></a>}}

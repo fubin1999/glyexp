@@ -99,6 +99,32 @@ Experiment <- R6::R6Class(
     #' @return The [Experiment] object.
     filter_variables = function(...) {
       private$filter(..., info = "variable")
+    },
+
+    #' @description
+    #' Mutate sample information.
+    #' This function mutates the sample information tibble using [dplyr::mutate()].
+    #' For example, `mutate_samples(new_group = if_else(new_col = 1)`
+    #' will add a new column "new_group" to the sample information tibble.
+    #' The [Experiment] object will be updated in place.
+    #' The [Experiment] object will be returned invisibly to allow chaining.
+    #' @param ... Mutations for the sample information tibble, passed to [dplyr::mutate()].
+    #' @return The [Experiment] object.
+    mutate_samples = function(...) {
+      private$mutate(..., info = "sample")
+    },
+
+    #' @description
+    #' Mutate variable information.
+    #' This function mutates the variable information tibble using [dplyr::mutate()].
+    #' For example, `mutate_variables(new_type = if_else(new_col = 1)`
+    #' will add a new column "new_type" to the variable information tibble.
+    #' The [Experiment] object will be updated in place.
+    #' The [Experiment] object will be returned invisibly to allow chaining.
+    #' @param ... Mutations for the variable information tibble, passed to [dplyr::mutate()].
+    #' @return The [Experiment] object.
+    mutate_variables = function(...) {
+      private$mutate(..., info = "variable")
     }
   ),
 
@@ -108,14 +134,7 @@ Experiment <- R6::R6Class(
     var_info = NULL,
 
     filter = function(..., info = NA) {
-      # Get the correct information tibble.
-      if (info == "sample") {
-        info_df <- private$sample_info
-      } else if (info == "variable") {
-        info_df <- private$var_info
-      } else {
-        cli::cli_abort("Unknown {info} type.")
-      }
+      info_df <- private$get_info(info)
       # Get samples/variables that meet the condition(s).
       tryCatch(
         selected <- info_df |>
@@ -151,6 +170,43 @@ Experiment <- R6::R6Class(
       }
       # Return the Experiment object invisibly.
       invisible(self)
+    },
+
+    mutate = function(..., info = NA) {
+      info_df <- private$get_info(info)
+      # Mutate the information data frame.
+      tryCatch(
+        new_info_df <- dplyr::mutate(info_df, ...),
+        error = function(e) {
+          if (stringr::str_detect(e$parent$message, "object '.*' not found")) {
+            missing_column <- stringr::str_extract_all(e$parent$message, "'(.*)'")[[1]]
+            cli::cli_abort(c(
+              "Column {.field {missing_column}} does not exist in the {info} information.",
+              "i" = "Available column(s): {.field {colnames(info_df)}}"
+            ))
+          } else {
+            rlang::abort(e)
+          }
+        }
+      )
+      # Update the Experiment object.
+      if (info == "sample") {
+        private$sample_info <- new_info_df
+      } else {
+        private$var_info <- new_info_df
+      }
+      # Return the Experiment object invisibly.
+      invisible(self)
+    },
+
+    get_info = function(info) {
+      if (info == "sample") {
+        return(private$sample_info)
+      } else if (info == "variable") {
+        return(private$var_info)
+      } else {
+        cli::cli_abort("Unknown {info} type.")
+      }
     }
   )
 )

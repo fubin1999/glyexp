@@ -99,3 +99,31 @@
       ! Column 'non_existing_column' does not exist in the variable information.
       i Available column(s): variable and type
 
+# mutate samples
+
+    Code
+      return_value <- exp$mutate_samples(new_sample = paste0("new_", sample))
+
+# mutating samples using non-existing columns raises an error
+
+    Code
+      exp$mutate_samples(new_col = non_existing_column)
+    Condition
+      Error in `value[[3L]]()`:
+      ! Column 'non_existing_column' does not exist in the sample information.
+      i Available column(s): sample and group
+
+# mutate variables
+
+    Code
+      return_value <- exp$mutate_variables(new_variable = paste0("new_", variable))
+
+# mutating variables using non-existing columns raises an error
+
+    Code
+      exp$mutate_variables(new_col = non_existing_column)
+    Condition
+      Error in `value[[3L]]()`:
+      ! Column 'non_existing_column' does not exist in the variable information.
+      i Available column(s): variable and type
+
