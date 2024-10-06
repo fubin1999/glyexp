@@ -108,6 +108,10 @@ Experiment <- R6::R6Class(
     #' will add a new column "new_group" to the sample information tibble.
     #' The [Experiment] object will be updated in place.
     #' The [Experiment] object will be returned invisibly to allow chaining.
+    #' @details
+    #' The columns "sample" is protected from being modified or renamed.
+    #' It is essential for keeping the linkage between the sample information and the expression matrix.
+    #' You may add new columns by transforming the "sample" column.
     #' @param ... Mutations for the sample information tibble, passed to [dplyr::mutate()].
     #' @return The [Experiment] object.
     mutate_samples = function(...) {
@@ -121,6 +125,10 @@ Experiment <- R6::R6Class(
     #' will add a new column "new_type" to the variable information tibble.
     #' The [Experiment] object will be updated in place.
     #' The [Experiment] object will be returned invisibly to allow chaining.
+    #' @details
+    #' The columns "variable" is protected from being modified or renamed.
+    #' It is essential for keeping the linkage between the variable information and the expression matrix.
+    #' You may add new columns by transforming the "variable" column.
     #' @param ... Mutations for the variable information tibble, passed to [dplyr::mutate()].
     #' @return The [Experiment] object.
     mutate_variables = function(...) {
@@ -132,6 +140,11 @@ Experiment <- R6::R6Class(
     expr_mat = NULL,
     sample_info = NULL,
     var_info = NULL,
+
+    # When using `mutate_samples()` or `mutate_variables()`,
+    # the columns below are protected from being modified.
+    protected_sample_cols = "sample",
+    protected_var_cols = "variable",
 
     filter = function(..., info = NA) {
       info_df <- private$get_info(info)
@@ -161,12 +174,36 @@ Experiment <- R6::R6Class(
     },
 
     mutate = function(..., info = NA) {
+      # This function mutates the tibble while protecting some columns.
+      # The protection is implemented by checking if the protected columns
+      # were modified after the mutation.
+      # This is not a perfect solution, certainly with performance issues.
+      # But as `dplyr::mutate()` uses non-standard evaluation,
+      # along with the `across` syntax,
+      # it is hard to know if a column will be modified beforehand.
+
       info_df <- private$get_info(info)
+      # Record the protected columns before mutation.
+      protected_cols <- dplyr::if_else(
+        info == "sample",
+        private$protected_sample_cols,
+        private$protected_var_cols
+      )
+      protected_before <- info_df[protected_cols]
       # Mutate the information data frame.
       try_dplyr(
         new_info_df <- dplyr::mutate(info_df, ...),
         info_df = info_df, info = info
       )
+      # Check if any protected columns were modified.
+      for (col in protected_cols) {
+        if (!identical(protected_before[[col]], new_info_df[[col]])) {
+          cli::cli_abort(c(
+            "Column {.field {col}} is protected and cannot be modified.",
+            "i" = "All protected columns: {.field {protected_cols}}"
+          ))
+        }
+      }
       # Update the Experiment object.
       if (info == "sample") {
         private$sample_info <- new_info_df

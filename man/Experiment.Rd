@@ -191,6 +191,12 @@ The \link{Experiment} object will be returned invisibly to allow chaining.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Details}{
+The columns "sample" is protected from being modified or renamed.
+It is essential for keeping the linkage between the sample information and the expression matrix.
+You may add new columns by transforming the "sample" column.
+}
+
 \subsection{Returns}{
 The \link{Experiment} object.
 }
@@ -216,6 +222,12 @@ The \link{Experiment} object will be returned invisibly to allow chaining.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Details}{
+The columns "variable" is protected from being modified or renamed.
+It is essential for keeping the linkage between the variable information and the expression matrix.
+You may add new columns by transforming the "variable" column.
+}
+
 \subsection{Returns}{
 The \link{Experiment} object.
 }

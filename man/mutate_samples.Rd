@@ -16,8 +16,8 @@ The new \link{Experiment} object.
 }
 \description{
 Mutate the sample information tibble using the \code{\link[dplyr:mutate]{dplyr::mutate()}} function.
-For example, \verb{mutate_samples(new_group = if_else(new_col = 1)}
-will add a new column "new_group" to the sample information tibble.
+For example, \verb{mutate_samples(exp, new_group = if_else(new_col = 1)}
+will add a new column "new_group" to the sample information tibble of \code{exp}.
 }
 \details{
 Instead of \code{Experiment$mutate_samples()}, which updates the \link{Experiment} object in place,
@@ -25,4 +25,8 @@ this function returns a new \code{Experiment} object with sample_info tibble upd
 The original \code{Experiment} object will not be altered.
 Besides, as the first argument is the \code{Experiment} object,
 this function could be used in a \code{magrittr} pipe.
+
+The columns "sample" is protected from being modified or renamed.
+It is essential for keeping the linkage between the sample information and the expression matrix.
+You may add new columns by transforming the "sample" column.
 }

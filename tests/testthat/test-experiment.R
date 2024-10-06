@@ -274,6 +274,27 @@ test_that("mutating samples using non-existing columns raises an error", {
 })
 
 
+test_that("forbitting modifying 'sample' column", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(exp$mutate_samples(sample = paste0("new_", sample)), error = TRUE)
+})
+
+
+test_that("forbitting modifying 'sample' column using `across`", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(exp$mutate_samples(across(sample, ~ paste0("new_", .))), error = TRUE)
+})
+
+
+test_that("forbitting modifying 'sample' column using `across(where)`", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(exp$mutate_samples(across(where(is.character), ~ paste0("new_", .))), error = TRUE)
+})
+
+
 test_that("mutate variables", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
@@ -290,4 +311,11 @@ test_that("mutating variables using non-existing columns raises an error", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
   expect_snapshot(exp$mutate_variables(new_col = non_existing_column), error = TRUE)
+})
+
+
+test_that("forbitting modifying 'variable' column", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(exp$mutate_variables(variable = paste0("new_", variable)), error = TRUE)
 })

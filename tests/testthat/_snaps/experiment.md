@@ -113,6 +113,33 @@
       ! Column 'non_existing_column' does not exist in the sample information.
       i Available column(s): sample and group
 
+# forbitting modifying 'sample' column
+
+    Code
+      exp$mutate_samples(sample = paste0("new_", sample))
+    Condition
+      Error in `private$mutate()`:
+      ! Column sample is protected and cannot be modified.
+      i All protected columns: sample
+
+# forbitting modifying 'sample' column using `across`
+
+    Code
+      exp$mutate_samples(across(sample, ~ paste0("new_", .)))
+    Condition
+      Error in `private$mutate()`:
+      ! Column sample is protected and cannot be modified.
+      i All protected columns: sample
+
+# forbitting modifying 'sample' column using `across(where)`
+
+    Code
+      exp$mutate_samples(across(where(is.character), ~ paste0("new_", .)))
+    Condition
+      Error in `private$mutate()`:
+      ! Column sample is protected and cannot be modified.
+      i All protected columns: sample
+
 # mutate variables
 
     Code
@@ -126,4 +153,13 @@
       Error in `value[[3L]]()`:
       ! Column 'non_existing_column' does not exist in the variable information.
       i Available column(s): variable and type
+
+# forbitting modifying 'variable' column
+
+    Code
+      exp$mutate_variables(variable = paste0("new_", variable))
+    Condition
+      Error in `private$mutate()`:
+      ! Column variable is protected and cannot be modified.
+      i All protected columns: variable
 
