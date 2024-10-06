@@ -67,3 +67,12 @@
     Message
       ! No sample meets the condition(s). An empty Experiment object is returned.
 
+# filtering samples using non-existing columns raises an error
+
+    Code
+      exp$filter_samples(non_existing_column == 1)
+    Condition
+      Error in `value[[3L]]()`:
+      ! Column 'non_existing_column' does not exist in the sample information.
+      i Available column(s): sample and group
+

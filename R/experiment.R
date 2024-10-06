@@ -85,17 +85,34 @@ Experiment <- R6::R6Class(
     #' @param ... Conditions for filtering samples, passed to [dplyr::filter()].
     #' @return The [Experiment] object.
     filter_samples = function(...) {
-      selected_samples <- private$sample_info %>%
-        dplyr::filter(...) %>%
-        dplyr::pull(sample)
+      # Get samples that meet the condition(s).
+      tryCatch(
+        selected_samples <- private$sample_info %>%
+          dplyr::filter(...) %>%
+          dplyr::pull(sample),
+        error = function(e) {
+          if (stringr::str_detect(e$parent$message, "object '.*' not found")) {
+            missing_column <- stringr::str_extract_all(e$parent$message, "'(.*)'")[[1]]
+            cli::cli_abort(c(
+              "Column {.field {missing_column}} does not exist in the sample information.",
+              "i" = "Available column(s): {.field {colnames(private$sample_info)}}"
+            ))
+          } else {
+            rlang::abort(e)
+          }
+        }
+      )
+      # Show information about the filtering results.
       if (length(selected_samples) == 0) {
         cli::cli_alert_warning("No sample meets the condition(s). An empty Experiment object is returned.")
       } else {
         cli::cli_alert_info("{.val {length(selected_samples)}} samples are selected.")
       }
+      # Update the Experiment object.
       private$expr_mat <- private$expr_mat[, selected_samples]
       private$sample_info <- private$sample_info %>%
         dplyr::filter(sample %in% selected_samples)
+      # Return the Experiment object invisibly.
       invisible(self)
     }
   ),

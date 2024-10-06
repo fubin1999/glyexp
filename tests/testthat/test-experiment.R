@@ -293,3 +293,10 @@ test_that("filter samples when no samples selected", {
   # expr_mat updated accordingly
   expect_equal(colnames(exp$get_expr_mat()), NULL)
 })
+
+
+test_that("filtering samples using non-existing columns raises an error", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(exp$filter_samples(non_existing_column == 1), error = TRUE)
+})
