@@ -76,3 +76,26 @@
       ! Column 'non_existing_column' does not exist in the sample information.
       i Available column(s): sample and group
 
+# filter variables
+
+    Code
+      return_value <- exp$filter_variables(variable %in% c("V1", "V2"))
+    Message
+      i 2 variables are selected.
+
+# filter variables when no variables selected
+
+    Code
+      return_value <- exp$filter_variables(variable %in% c("V4", "V5"))
+    Message
+      ! No variable meets the condition(s). An empty Experiment object is returned.
+
+# filtering variables using non-existing columns raises an error
+
+    Code
+      exp$filter_variables(non_existing_column == 1)
+    Condition
+      Error in `value[[3L]]()`:
+      ! Column 'non_existing_column' does not exist in the variable information.
+      i Available column(s): variable and type
+

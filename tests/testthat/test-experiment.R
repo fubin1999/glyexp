@@ -300,3 +300,38 @@ test_that("filtering samples using non-existing columns raises an error", {
 
   expect_snapshot(exp$filter_samples(non_existing_column == 1), error = TRUE)
 })
+
+
+test_that("filter variables", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(return_value <- exp$filter_variables(variable %in% c("V1", "V2")))
+
+  # should return self
+  expect_true(rlang::is_reference(return_value, exp))
+  # var_info updated
+  expect_equal(exp$get_var_info()$variable, c("V1", "V2"))
+  # expr_mat updated accordingly
+  expect_equal(rownames(exp$get_expr_mat()), c("V1", "V2"))
+})
+
+
+test_that("filter variables when no variables selected", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(return_value <- exp$filter_variables(variable %in% c("V4", "V5")))
+
+  # should return self
+  expect_true(rlang::is_reference(return_value, exp))
+  # var_info updated
+  expect_equal(exp$get_var_info()$variable, character(0))
+  # expr_mat updated accordingly
+  expect_equal(rownames(exp$get_expr_mat()), NULL)
+})
+
+
+test_that("filtering variables using non-existing columns raises an error", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(exp$filter_variables(non_existing_column == 1), error = TRUE)
+})
