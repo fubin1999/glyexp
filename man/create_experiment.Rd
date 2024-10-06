@@ -4,13 +4,7 @@
 \alias{create_experiment}
 \title{Function that Creates a New \link{Experiment} Object}
 \usage{
-create_experiment(
-  name = NA,
-  expr_mat = NA,
-  sample_info = NA,
-  var_info = NA,
-  rownames = FALSE
-)
+create_experiment(name, expr_mat, sample_info, var_info, rownames = FALSE)
 }
 \arguments{
 \item{name}{Name of the experiment.}
