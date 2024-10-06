@@ -217,7 +217,7 @@ sanity_check <- function(expr_mat, sample_info, var_info) {
     cli::cli_alert_danger("Variables are not consistent in {.field expr_mat} and {.field var_info}.")
     pass_check <- FALSE
   }
-  if (!pass_check) stop()
+  if (!pass_check) cli::cli_abort("Please check the data consistency.")
 }
 
 

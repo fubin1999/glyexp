@@ -18,6 +18,7 @@
       x Samples are not consistent in expr_mat and sample_info.
     Condition
       Error in `sanity_check()`:
+      ! Please check the data consistency.
 
 # extra samples in sample_info raises an alert
 
@@ -28,6 +29,7 @@
       x Samples are not consistent in expr_mat and sample_info.
     Condition
       Error in `sanity_check()`:
+      ! Please check the data consistency.
 
 # missing variables in var_info raises an alert
 
@@ -38,6 +40,7 @@
       x Variables are not consistent in expr_mat and var_info.
     Condition
       Error in `sanity_check()`:
+      ! Please check the data consistency.
 
 # extra variables in var_info raises an alert
 
@@ -48,6 +51,7 @@
       x Variables are not consistent in expr_mat and var_info.
     Condition
       Error in `sanity_check()`:
+      ! Please check the data consistency.
 
 # filter samples
 
