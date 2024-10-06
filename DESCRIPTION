@@ -21,6 +21,7 @@ Imports:
     dplyr,
     R6,
     rlang (>= 1.1.4),
+    stringr,
     tibble
-Remotes:  
+Remotes: 
     r-lib/rlang

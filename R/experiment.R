@@ -136,21 +136,9 @@ Experiment <- R6::R6Class(
     filter = function(..., info = NA) {
       info_df <- private$get_info(info)
       # Get samples/variables that meet the condition(s).
-      tryCatch(
-        selected <- info_df |>
-          dplyr::filter(...) |>
-          dplyr::pull(dplyr::all_of(info)),
-        error = function(e) {
-          if (stringr::str_detect(e$parent$message, "object '.*' not found")) {
-            missing_column <- stringr::str_extract_all(e$parent$message, "'(.*)'")[[1]]
-            cli::cli_abort(c(
-              "Column {.field {missing_column}} does not exist in the {info} information.",
-              "i" = "Available column(s): {.field {colnames(info_df)}}"
-            ))
-          } else {
-            rlang::abort(e)
-          }
-        }
+      try_dplyr(
+        selected <- info_df |> dplyr::filter(...) |> dplyr::pull(dplyr::all_of(info)),
+        info_df = info_df, info = info
       )
       # Show information about the filtering results.
       if (length(selected) == 0) {
@@ -175,19 +163,9 @@ Experiment <- R6::R6Class(
     mutate = function(..., info = NA) {
       info_df <- private$get_info(info)
       # Mutate the information data frame.
-      tryCatch(
+      try_dplyr(
         new_info_df <- dplyr::mutate(info_df, ...),
-        error = function(e) {
-          if (stringr::str_detect(e$parent$message, "object '.*' not found")) {
-            missing_column <- stringr::str_extract_all(e$parent$message, "'(.*)'")[[1]]
-            cli::cli_abort(c(
-              "Column {.field {missing_column}} does not exist in the {info} information.",
-              "i" = "Available column(s): {.field {colnames(info_df)}}"
-            ))
-          } else {
-            rlang::abort(e)
-          }
-        }
+        info_df = info_df, info = info
       )
       # Update the Experiment object.
       if (info == "sample") {
@@ -241,4 +219,35 @@ show_data_info <- function(sample_info, var_info) {
   cli::cli_alert_info("No of Variables: {.val {nrow(var_info)}}")
   cli::cli_alert_info("Meta-data fields for samples: {.field {setdiff(colnames(sample_info), 'sample')}}")
   cli::cli_alert_info("Meta-data fields for variables: {.field {setdiff(colnames(var_info), 'variable')}}")
+}
+
+
+# This is a hard-to-understand function that tries to evaluate an expression
+# in the parent frame, and provides a more informative error message when
+# the error is about missing column in the information tibble.
+# It could be regarded as a customized version of `tryCatch()`,
+# with the `error` argument tailored for handling missing column error
+# of a `dplyr` function.
+# Used in `Experiment$filter()` and `Experiment$mutate()` private methods.
+try_dplyr = function(expr, info_df, info) {
+  tryCatch(
+    # `expr` is evaluated in the parent frame, thanks to the lazy evaluation.
+    # This allows the client code run any dplyr functions in the parent frame.
+    eval(expr, envir = parent.frame()),
+    # Capture the error and provide a more informative message, including:
+    # 1. The column that does not exist in the information data frame.
+    # 2. The available columns in the information data frame.
+    # If hte error is not about missing column, re-throw the error.
+    error = function(e) {
+      if (stringr::str_detect(conditionMessage(e), "object '.*' not found")) {
+        missing_column <- stringr::str_extract_all(conditionMessage(e), "'(.*)'")[[1]]
+        cli::cli_abort(c(
+          "Column {.field {missing_column}} does not exist in the {info} information.",
+          "i" = "Available column(s): {.field {colnames(info_df)}}"
+        ))
+      } else {
+        rlang::abort(e)
+      }
+    }
+  )
 }
