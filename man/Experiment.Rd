@@ -126,11 +126,8 @@ A copy of the variable information tibble.
 \if{html}{\out{<a id="method-Experiment-filter_samples"></a>}}
 \if{latex}{\out{\hypertarget{method-Experiment-filter_samples}{}}}
 \subsection{Method \code{filter_samples()}}{
-Filter samples based on conditions.
-This function filters samples based on conditions specified in the \code{\link[dplyr:filter]{dplyr::filter()}} function.
+This method filters samples based on conditions specified in the \code{\link[dplyr:filter]{dplyr::filter()}} function.
 For example, \code{filter_samples(group == "A")} will keep samples with "group" equal to "A".
-The \link{Experiment} object will be updated in place.
-The \link{Experiment} object will be returned invisibly to allow chaining.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Experiment$filter_samples(...)}\if{html}{\out{</div>}}
 }
@@ -142,6 +139,12 @@ The \link{Experiment} object will be returned invisibly to allow chaining.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Details}{
+This will affect both the expression matrix and the sample information tibble.
+The \link{Experiment} object will be updated in place.
+The \link{Experiment} object will be returned invisibly to allow chaining.
+}
+
 \subsection{Returns}{
 The \link{Experiment} object.
 }
@@ -150,11 +153,8 @@ The \link{Experiment} object.
 \if{html}{\out{<a id="method-Experiment-filter_variables"></a>}}
 \if{latex}{\out{\hypertarget{method-Experiment-filter_variables}{}}}
 \subsection{Method \code{filter_variables()}}{
-Filter variables based on conditions.
-This function filters variables based on conditions specified in the \code{\link[dplyr:filter]{dplyr::filter()}} function.
+This method filters variables based on conditions specified in the \code{\link[dplyr:filter]{dplyr::filter()}} function.
 For example, \code{filter_variables(type == "B")} will keep variables with "type" equal to "B".
-The \link{Experiment} object will be updated in place.
-The \link{Experiment} object will be returned invisibly to allow chaining.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Experiment$filter_variables(...)}\if{html}{\out{</div>}}
 }
@@ -166,6 +166,12 @@ The \link{Experiment} object will be returned invisibly to allow chaining.
 }
 \if{html}{\out{</div>}}
 }
+\subsection{Details}{
+This will affect both the expression matrix and the variable information tibble.
+The \link{Experiment} object will be updated in place.
+The \link{Experiment} object will be returned invisibly to allow chaining.
+}
+
 \subsection{Returns}{
 The \link{Experiment} object.
 }
@@ -174,12 +180,9 @@ The \link{Experiment} object.
 \if{html}{\out{<a id="method-Experiment-mutate_samples"></a>}}
 \if{latex}{\out{\hypertarget{method-Experiment-mutate_samples}{}}}
 \subsection{Method \code{mutate_samples()}}{
-Mutate sample information.
 This function mutates the sample information tibble using \code{\link[dplyr:mutate]{dplyr::mutate()}}.
 For example, \verb{mutate_samples(new_group = if_else(new_col = 1)}
 will add a new column "new_group" to the sample information tibble.
-The \link{Experiment} object will be updated in place.
-The \link{Experiment} object will be returned invisibly to allow chaining.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Experiment$mutate_samples(...)}\if{html}{\out{</div>}}
 }
@@ -192,6 +195,9 @@ The \link{Experiment} object will be returned invisibly to allow chaining.
 \if{html}{\out{</div>}}
 }
 \subsection{Details}{
+The \link{Experiment} object will be updated in place.
+The \link{Experiment} object will be returned invisibly to allow chaining.
+
 The columns "sample" is protected from being modified or renamed.
 It is essential for keeping the linkage between the sample information and the expression matrix.
 You may add new columns by transforming the "sample" column.
@@ -205,12 +211,9 @@ The \link{Experiment} object.
 \if{html}{\out{<a id="method-Experiment-mutate_variables"></a>}}
 \if{latex}{\out{\hypertarget{method-Experiment-mutate_variables}{}}}
 \subsection{Method \code{mutate_variables()}}{
-Mutate variable information.
 This function mutates the variable information tibble using \code{\link[dplyr:mutate]{dplyr::mutate()}}.
 For example, \verb{mutate_variables(new_type = if_else(new_col = 1)}
 will add a new column "new_type" to the variable information tibble.
-The \link{Experiment} object will be updated in place.
-The \link{Experiment} object will be returned invisibly to allow chaining.
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Experiment$mutate_variables(...)}\if{html}{\out{</div>}}
 }
@@ -223,6 +226,9 @@ The \link{Experiment} object will be returned invisibly to allow chaining.
 \if{html}{\out{</div>}}
 }
 \subsection{Details}{
+The \link{Experiment} object will be updated in place.
+The \link{Experiment} object will be returned invisibly to allow chaining.
+
 The columns "variable" is protected from being modified or renamed.
 It is essential for keeping the linkage between the variable information and the expression matrix.
 You may add new columns by transforming the "variable" column.

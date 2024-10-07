@@ -78,9 +78,10 @@ Experiment <- R6::R6Class(
     },
 
     #' @description
-    #' Filter samples based on conditions.
-    #' This function filters samples based on conditions specified in the [dplyr::filter()] function.
+    #' This method filters samples based on conditions specified in the [dplyr::filter()] function.
     #' For example, `filter_samples(group == "A")` will keep samples with "group" equal to "A".
+    #' @details
+    #' This will affect both the expression matrix and the sample information tibble.
     #' The [Experiment] object will be updated in place.
     #' The [Experiment] object will be returned invisibly to allow chaining.
     #' @param ... Conditions for filtering samples, passed to [dplyr::filter()].
@@ -90,9 +91,10 @@ Experiment <- R6::R6Class(
     },
 
     #' @description
-    #' Filter variables based on conditions.
-    #' This function filters variables based on conditions specified in the [dplyr::filter()] function.
+    #' This method filters variables based on conditions specified in the [dplyr::filter()] function.
     #' For example, `filter_variables(type == "B")` will keep variables with "type" equal to "B".
+    #' @details
+    #' This will affect both the expression matrix and the variable information tibble.
     #' The [Experiment] object will be updated in place.
     #' The [Experiment] object will be returned invisibly to allow chaining.
     #' @param ... Conditions for filtering variables, passed to [dplyr::filter()].
@@ -102,13 +104,13 @@ Experiment <- R6::R6Class(
     },
 
     #' @description
-    #' Mutate sample information.
     #' This function mutates the sample information tibble using [dplyr::mutate()].
     #' For example, `mutate_samples(new_group = if_else(new_col = 1)`
     #' will add a new column "new_group" to the sample information tibble.
+    #' @details
     #' The [Experiment] object will be updated in place.
     #' The [Experiment] object will be returned invisibly to allow chaining.
-    #' @details
+    #'
     #' The columns "sample" is protected from being modified or renamed.
     #' It is essential for keeping the linkage between the sample information and the expression matrix.
     #' You may add new columns by transforming the "sample" column.
@@ -119,13 +121,13 @@ Experiment <- R6::R6Class(
     },
 
     #' @description
-    #' Mutate variable information.
     #' This function mutates the variable information tibble using [dplyr::mutate()].
     #' For example, `mutate_variables(new_type = if_else(new_col = 1)`
     #' will add a new column "new_type" to the variable information tibble.
+    #' @details
     #' The [Experiment] object will be updated in place.
     #' The [Experiment] object will be returned invisibly to allow chaining.
-    #' @details
+    #'
     #' The columns "variable" is protected from being modified or renamed.
     #' It is essential for keeping the linkage between the variable information and the expression matrix.
     #' You may add new columns by transforming the "variable" column.
