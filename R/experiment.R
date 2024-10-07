@@ -143,11 +143,6 @@ Experiment <- R6::R6Class(
     sample_info = NULL,
     var_info = NULL,
 
-    # When using `mutate_samples()` or `mutate_variables()`,
-    # the columns below are protected from being modified.
-    protected_sample_cols = "sample",
-    protected_var_cols = "variable",
-
     filter = function(..., info = NA) {
       info_df <- private$get_info(info)
       # Get samples/variables that meet the condition(s).
@@ -185,26 +180,17 @@ Experiment <- R6::R6Class(
       # it is hard to know if a column will be modified beforehand.
 
       info_df <- private$get_info(info)
-      # Record the protected columns before mutation.
-      protected_cols <- dplyr::if_else(
-        info == "sample",
-        private$protected_sample_cols,
-        private$protected_var_cols
-      )
-      protected_before <- info_df[protected_cols]
+      # Record the protected column before mutation.
+      protected_col <- dplyr::if_else(info == "sample", "sample", "variable")
+      protected_before <- info_df[[protected_col]]
       # Mutate the information data frame.
       try_dplyr(
         new_info_df <- dplyr::mutate(info_df, ...),
         info_df = info_df, info = info
       )
       # Check if any protected columns were modified.
-      for (col in protected_cols) {
-        if (!identical(protected_before[[col]], new_info_df[[col]])) {
-          cli::cli_abort(c(
-            "Column {.field {col}} is protected and cannot be modified.",
-            "i" = "All protected columns: {.field {protected_cols}}"
-          ))
-        }
+      if (!identical(protected_before, new_info_df[[protected_col]])) {
+        cli::cli_abort("Column {.field {protected_col}} is protected and cannot be modified.")
       }
       # Update the Experiment object.
       if (info == "sample") {

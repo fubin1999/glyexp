@@ -120,7 +120,6 @@
     Condition
       Error in `private$mutate()`:
       ! Column sample is protected and cannot be modified.
-      i All protected columns: sample
 
 # forbitting modifying 'sample' column using `across`
 
@@ -129,7 +128,6 @@
     Condition
       Error in `private$mutate()`:
       ! Column sample is protected and cannot be modified.
-      i All protected columns: sample
 
 # forbitting modifying 'sample' column using `across(where)`
 
@@ -138,7 +136,6 @@
     Condition
       Error in `private$mutate()`:
       ! Column sample is protected and cannot be modified.
-      i All protected columns: sample
 
 # mutate variables
 
@@ -161,5 +158,4 @@
     Condition
       Error in `private$mutate()`:
       ! Column variable is protected and cannot be modified.
-      i All protected columns: variable
 
