@@ -199,17 +199,13 @@ test_that("filter samples", {
 })
 
 
-test_that("filter samples when no samples selected", {
+test_that("filtering samples when no samples selected raises an error", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
-  expect_snapshot(return_value <- exp$filter_samples(sample %in% c("S4", "S5")))
+  expect_snapshot(exp$filter_samples(sample %in% c("S4", "S5")), error = TRUE)
 
-  # should return self
-  expect_true(rlang::is_reference(return_value, exp))
-  # sample_info updated
-  expect_equal(exp$get_sample_info()$sample, character(0))
-  # expr_mat updated accordingly
-  expect_equal(colnames(exp$get_expr_mat()), NULL)
+  # exp should not be modified
+  expect_equal(exp$get_sample_info()$sample, c("S1", "S2", "S3"))
 })
 
 
@@ -234,17 +230,23 @@ test_that("filter variables", {
 })
 
 
-test_that("filter variables when no variables selected", {
+test_that("filtering variables when no variables selected raises an error", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 
-  expect_snapshot(return_value <- exp$filter_variables(variable %in% c("V4", "V5")))
+  expect_snapshot(exp$filter_variables(variable %in% c("V4", "V5")), error = TRUE)
 
-  # should return self
-  expect_true(rlang::is_reference(return_value, exp))
-  # var_info updated
-  expect_equal(exp$get_var_info()$variable, character(0))
-  # expr_mat updated accordingly
-  expect_equal(rownames(exp$get_expr_mat()), NULL)
+  # exp should not be modified
+  expect_equal(exp$get_var_info()$variable, c("V1", "V2", "V3"))
+})
+
+
+test_that("filtering variables when no variables selected with many conditions", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(
+    exp$filter_variables(variable %in% c("V4", "V5"), type == "D"),
+    error = TRUE
+  )
 })
 
 

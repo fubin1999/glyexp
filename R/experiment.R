@@ -82,6 +82,7 @@ Experiment <- R6::R6Class(
     #' For example, `filter_samples(group == "A")` will keep samples with "group" equal to "A".
     #' @details
     #' This will affect both the expression matrix and the sample information tibble.
+    #' If no samples meet the condition(s), an error will be thrown.
     #' The [Experiment] object will be updated in place.
     #' The [Experiment] object will be returned invisibly to allow chaining.
     #' @param ... Conditions for filtering samples, passed to [dplyr::filter()].
@@ -95,6 +96,7 @@ Experiment <- R6::R6Class(
     #' For example, `filter_variables(type == "B")` will keep variables with "type" equal to "B".
     #' @details
     #' This will affect both the expression matrix and the variable information tibble.
+    #' If no variables meet the condition(s), an error will be thrown.
     #' The [Experiment] object will be updated in place.
     #' The [Experiment] object will be returned invisibly to allow chaining.
     #' @param ... Conditions for filtering variables, passed to [dplyr::filter()].
@@ -186,7 +188,15 @@ Experiment <- R6::R6Class(
       )
       # Show information about the filtering results.
       if (length(selected) == 0) {
-        cli::cli_alert_warning("No {info} meets the condition(s). An empty Experiment object is returned.")
+        # If no samples/variables meet the condition(s), abort the operation.
+        # The rationale of this behavior instead of returning an empty object is that,
+        # when no samples/variables meet the condition(s),
+        # storing the empty object in a variable or passing it to downstream functions
+        # is meaningless and may lead to unexpected results.
+        # Besides, most of the time when this happens,
+        # it is likely that the user made a mistake in the condition(s).
+        condition_text <- purrr::map_chr(rlang::enexprs(...), rlang::expr_label)
+        cli::cli_abort("No {info} meets the condition(s): {.expr {condition_text}}.")
       } else {
         cli::cli_alert_info("{.val {length(selected)}} {info}s are selected.")
       }

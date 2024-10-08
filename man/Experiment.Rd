@@ -143,6 +143,7 @@ For example, \code{filter_samples(group == "A")} will keep samples with "group" 
 }
 \subsection{Details}{
 This will affect both the expression matrix and the sample information tibble.
+If no samples meet the condition(s), an error will be thrown.
 The \link{Experiment} object will be updated in place.
 The \link{Experiment} object will be returned invisibly to allow chaining.
 }
@@ -170,6 +171,7 @@ For example, \code{filter_variables(type == "B")} will keep variables with "type
 }
 \subsection{Details}{
 This will affect both the expression matrix and the variable information tibble.
+If no variables meet the condition(s), an error will be thrown.
 The \link{Experiment} object will be updated in place.
 The \link{Experiment} object will be returned invisibly to allow chaining.
 }

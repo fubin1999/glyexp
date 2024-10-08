@@ -60,12 +60,13 @@
     Message
       i 2 samples are selected.
 
-# filter samples when no samples selected
+# filtering samples when no samples selected raises an error
 
     Code
-      return_value <- exp$filter_samples(sample %in% c("S4", "S5"))
-    Message
-      ! No sample meets the condition(s). An empty Experiment object is returned.
+      exp$filter_samples(sample %in% c("S4", "S5"))
+    Condition
+      Error in `private$filter()`:
+      ! No sample meets the condition(s): `sample %in% c("S4", "S5")`.
 
 # filtering samples using non-existing columns raises an error
 
@@ -83,12 +84,21 @@
     Message
       i 2 variables are selected.
 
-# filter variables when no variables selected
+# filtering variables when no variables selected raises an error
 
     Code
-      return_value <- exp$filter_variables(variable %in% c("V4", "V5"))
-    Message
-      ! No variable meets the condition(s). An empty Experiment object is returned.
+      exp$filter_variables(variable %in% c("V4", "V5"))
+    Condition
+      Error in `private$filter()`:
+      ! No variable meets the condition(s): `variable %in% c("V4", "V5")`.
+
+# filtering variables when no variables selected with many conditions
+
+    Code
+      exp$filter_variables(variable %in% c("V4", "V5"), type == "D")
+    Condition
+      Error in `private$filter()`:
+      ! No variable meets the condition(s): `variable %in% c("V4", "V5")` and `type == "D"`.
 
 # filtering variables using non-existing columns raises an error
 
