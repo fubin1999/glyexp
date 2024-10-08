@@ -135,6 +135,40 @@ Experiment <- R6::R6Class(
     #' @return The [Experiment] object.
     mutate_variables = function(...) {
       private$mutate(..., info = "variable")
+    },
+
+    #' @description
+    #' This function selects columns in the sample information tibble.
+    #' You don't need to select the "sample" column explicitly, as it is always selected.
+    #' For example, `exp$select_samples(group)` will result in a tibble
+    #' with the "sample" and "group" columns.
+    #' @details
+    #' The [Experiment] object will be updated in place.
+    #' The [Experiment] object will be returned invisibly to allow chaining.
+    #'
+    #' When the user tries to select or deselect the "sample" column explicitly,
+    #' an error will be thrown.
+    #' @param ... <[`tidy-select`][dplyr_tidy_select]> for selecting columns, passed to [dplyr::select()].
+    #' @return The [Experiment] object.
+    select_samples = function(...) {
+      private$select(..., info = "sample")
+    },
+
+    #' @description
+    #' This function selects columns in the variable information tibble.
+    #' You don't need to select the "variable" column explicitly, as it is always selected.
+    #' For example, `exp$select_variables(peptide, protein)` will result in a tibble
+    #' with the "variable", "peptide", and "protein" columns.
+    #' @details
+    #' The [Experiment] object will be updated in place.
+    #' The [Experiment] object will be returned invisibly to allow chaining.
+    #'
+    #' When the user tries to select or deselect the "variable" column explicitly,
+    #' an error will be thrown.
+    #' @param ... <[`tidy-select`][dplyr_tidy_select]> for selecting columns, passed to [dplyr::select()].
+    #' @return The [Experiment] object.
+    select_variables = function(...) {
+      private$select(..., info = "variable")
     }
   ),
 
@@ -192,6 +226,44 @@ Experiment <- R6::R6Class(
       if (!identical(protected_before, new_info_df[[protected_col]])) {
         cli::cli_abort("Column {.field {protected_col}} is protected and cannot be modified.")
       }
+      # Update the Experiment object.
+      if (info == "sample") {
+        private$sample_info <- new_info_df
+      } else {
+        private$var_info <- new_info_df
+      }
+      # Return the Experiment object invisibly.
+      invisible(self)
+    },
+
+    select = function(..., info = NA) {
+      # The "sample" column in `sample_info` and the "variable" column in `var_info`
+      # will always be selected, without explicit declaration.
+
+      info_df <- private$get_info(info)
+      # Select the columns.
+      new_info_df <- tryCatch(
+        info_df |> dplyr::select(-all_of(info)) |> dplyr::select(...),
+        error = function(e) {
+          if (stringr::str_detect(conditionMessage(e), "Column `.*` doesn't exist")) {
+            missing_column <- stringr::str_extract(conditionMessage(e), "`(.*)`", group = 1)
+            if (missing_column == info) {
+              cli::cli_abort(c(
+                "You cannot select or deselect the {.field {info}} column explicitly.",
+                "i" = "The {.field {info}} column is always selected automatically."
+                ))
+            } else {
+              cli::cli_abort(c(
+                "Column {.field {missing_column}} does not exist in the {info} information.",
+                "i" = "Available column(s): {.field {colnames(info_df)}}. (The {.field {info}} column is always selected automatically.)"
+              ))
+            }
+          } else {
+            rlang::abort(e)
+          }
+        }
+      )
+      new_info_df <- dplyr::mutate(new_info_df, !!info := info_df[[info]], .before = 1)
       # Update the Experiment object.
       if (info == "sample") {
         private$sample_info <- new_info_df

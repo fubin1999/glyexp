@@ -159,3 +159,67 @@
       Error in `private$mutate()`:
       ! Column variable is protected and cannot be modified.
 
+# select sample_info columns
+
+    Code
+      return_value <- exp$select_samples(group)
+
+# select var_info columns
+
+    Code
+      return_value <- exp$select_variables(protein)
+
+# selecting non-existing columns raises an error
+
+    Code
+      exp$select_samples(non_existing_column)
+    Condition
+      Error in `value[[3L]]()`:
+      ! Column non_existing_column does not exist in the sample information.
+      i Available column(s): sample and group. (The sample column is always selected automatically.)
+
+---
+
+    Code
+      exp$select_variables(non_existing_column)
+    Condition
+      Error in `value[[3L]]()`:
+      ! Column non_existing_column does not exist in the variable information.
+      i Available column(s): variable and type. (The variable column is always selected automatically.)
+
+# selecting 'sample' gives an error
+
+    Code
+      exp$select_samples(sample, group)
+    Condition
+      Error in `value[[3L]]()`:
+      ! You cannot select or deselect the sample column explicitly.
+      i The sample column is always selected automatically.
+
+# selecting 'variable' gives an error
+
+    Code
+      exp$select_variables(variable, type)
+    Condition
+      Error in `value[[3L]]()`:
+      ! You cannot select or deselect the variable column explicitly.
+      i The variable column is always selected automatically.
+
+# deselecting 'sample' gives an error
+
+    Code
+      exp$select_samples(-sample)
+    Condition
+      Error in `value[[3L]]()`:
+      ! You cannot select or deselect the sample column explicitly.
+      i The sample column is always selected automatically.
+
+# deselecting 'variable' gives an error
+
+    Code
+      exp$select_variables(-variable)
+    Condition
+      Error in `value[[3L]]()`:
+      ! You cannot select or deselect the variable column explicitly.
+      i The variable column is always selected automatically.
+

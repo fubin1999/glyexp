@@ -31,6 +31,8 @@ automatically affect both the expression matrix and the sample information.
 \item \href{#method-Experiment-filter_variables}{\code{Experiment$filter_variables()}}
 \item \href{#method-Experiment-mutate_samples}{\code{Experiment$mutate_samples()}}
 \item \href{#method-Experiment-mutate_variables}{\code{Experiment$mutate_variables()}}
+\item \href{#method-Experiment-select_samples}{\code{Experiment$select_samples()}}
+\item \href{#method-Experiment-select_variables}{\code{Experiment$select_variables()}}
 \item \href{#method-Experiment-clone}{\code{Experiment$clone()}}
 }
 }
@@ -232,6 +234,68 @@ The \link{Experiment} object will be returned invisibly to allow chaining.
 The columns "variable" is protected from being modified or renamed.
 It is essential for keeping the linkage between the variable information and the expression matrix.
 You may add new columns by transforming the "variable" column.
+}
+
+\subsection{Returns}{
+The \link{Experiment} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Experiment-select_samples"></a>}}
+\if{latex}{\out{\hypertarget{method-Experiment-select_samples}{}}}
+\subsection{Method \code{select_samples()}}{
+This function selects columns in the sample information tibble.
+You don't need to select the "sample" column explicitly, as it is always selected.
+For example, \code{exp$select_samples(group)} will result in a tibble
+with the "sample" and "group" columns.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Experiment$select_samples(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{<\code{\link[=dplyr_tidy_select]{tidy-select}}> for selecting columns, passed to \code{\link[dplyr:select]{dplyr::select()}}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+The \link{Experiment} object will be updated in place.
+The \link{Experiment} object will be returned invisibly to allow chaining.
+
+When the user tries to select or deselect the "sample" column explicitly,
+an error will be thrown.
+}
+
+\subsection{Returns}{
+The \link{Experiment} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Experiment-select_variables"></a>}}
+\if{latex}{\out{\hypertarget{method-Experiment-select_variables}{}}}
+\subsection{Method \code{select_variables()}}{
+This function selects columns in the variable information tibble.
+You don't need to select the "variable" column explicitly, as it is always selected.
+For example, \code{exp$select_variables(peptide, protein)} will result in a tibble
+with the "variable", "peptide", and "protein" columns.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Experiment$select_variables(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{<\code{\link[=dplyr_tidy_select]{tidy-select}}> for selecting columns, passed to \code{\link[dplyr:select]{dplyr::select()}}.}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Details}{
+The \link{Experiment} object will be updated in place.
+The \link{Experiment} object will be returned invisibly to allow chaining.
+
+When the user tries to select or deselect the "variable" column explicitly,
+an error will be thrown.
 }
 
 \subsection{Returns}{

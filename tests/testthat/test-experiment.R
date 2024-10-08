@@ -319,3 +319,93 @@ test_that("forbitting modifying 'variable' column", {
 
   expect_snapshot(exp$mutate_variables(variable = paste0("new_", variable)), error = TRUE)
 })
+
+
+test_that("select sample_info columns", {
+  sample_info <- tibble::tibble(
+    sample = c("S1", "S2", "S3"),
+    group = rep("A", 3),
+    batch = 1:3
+  )
+  var_info <- create_var_info(c("V1", "V2", "V3"))
+  expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  suppressMessages(
+    exp <- Experiment$new(
+      name = "my_experiment",
+      expr_mat = expr_mat,
+      sample_info = sample_info,
+      var_info = var_info
+    )
+  )
+
+  # We don't have to select the "sample" column explicitly.
+  expect_snapshot(return_value <- exp$select_samples(group))
+
+  # should return self
+  expect_true(rlang::is_reference(return_value, exp))
+  # exp updated
+  expect_identical(colnames(exp$get_sample_info()), c("sample", "group"))
+})
+
+
+test_that("select var_info columns", {
+  var_info <- tibble::tibble(
+    variable = c("V1", "V2", "V3"),
+    peptide = paste0("PEPTIDE", 1:3),
+    protein = paste0("PROTEIN", 1:3)
+  )
+  sample_info <- create_sample_info(c("S1", "S2", "S3"))
+  expr_mat <- create_expr_mat(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+  suppressMessages(
+    exp <- Experiment$new(
+      name = "my_experiment",
+      expr_mat = expr_mat,
+      sample_info = sample_info,
+      var_info = var_info
+    )
+  )
+
+  # We don't need to select the "variable" column explicitly.
+  expect_snapshot(return_value <- exp$select_variables(protein))
+
+  # should return self
+  expect_true(rlang::is_reference(return_value, exp))
+  # exp updated
+  expect_identical(colnames(exp$get_var_info()), c("variable", "protein"))
+})
+
+
+test_that("selecting non-existing columns raises an error", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(exp$select_samples(non_existing_column), error = TRUE)
+  expect_snapshot(exp$select_variables(non_existing_column), error = TRUE)
+})
+
+
+test_that("selecting 'sample' gives an error", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(exp$select_samples(sample, group), error = TRUE)
+})
+
+
+test_that("selecting 'variable' gives an error", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(exp$select_variables(variable, type), error = TRUE)
+})
+
+
+test_that("deselecting 'sample' gives an error", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(exp$select_samples(-sample), error = TRUE)
+})
+
+
+test_that("deselecting 'variable' gives an error", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(exp$select_variables(-variable), error = TRUE)
+})
