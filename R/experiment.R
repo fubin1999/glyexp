@@ -171,6 +171,17 @@ Experiment <- R6::R6Class(
     #' @return The [Experiment] object.
     select_variables = function(...) {
       private$select(..., info = "variable")
+    },
+
+    #' @description
+    #' Print the basic information of the Experiment object.
+    #' @param ... Ignored.
+    print = function(...) {
+      cli::cli_alert_info("===== Experiment Object =====")
+      cli::cli_alert_info("Name: {.val {self$name}}")
+      cli::cli_alert_info("Expression Matrix: {.val {ncol(private$expr_mat)}} samples, {.val {nrow(private$expr_mat)}} variables")
+      cli::cli_alert_info("Sample Information Fields: {.field {setdiff(colnames(private$sample_info), 'sample')}}")
+      cli::cli_alert_info("Variable Information Fields: {.field {setdiff(colnames(private$var_info), 'variable')}}")
     }
   ),
 

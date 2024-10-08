@@ -185,6 +185,13 @@ test_that("getting data copies instead of original data", {
 })
 
 
+test_that("print experiemnt", {
+  exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
+
+  expect_snapshot(exp)
+})
+
+
 test_that("filter samples", {
   exp <- create_test_exp(c("S1", "S2", "S3"), c("V1", "V2", "V3"))
 

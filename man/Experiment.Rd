@@ -33,6 +33,7 @@ automatically affect both the expression matrix and the sample information.
 \item \href{#method-Experiment-mutate_variables}{\code{Experiment$mutate_variables()}}
 \item \href{#method-Experiment-select_samples}{\code{Experiment$select_samples()}}
 \item \href{#method-Experiment-select_variables}{\code{Experiment$select_variables()}}
+\item \href{#method-Experiment-print}{\code{Experiment$print()}}
 \item \href{#method-Experiment-clone}{\code{Experiment$clone()}}
 }
 }
@@ -302,6 +303,23 @@ an error will be thrown.
 
 \subsection{Returns}{
 The \link{Experiment} object.
+}
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Experiment-print"></a>}}
+\if{latex}{\out{\hypertarget{method-Experiment-print}{}}}
+\subsection{Method \code{print()}}{
+Print the basic information of the Experiment object.
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Experiment$print(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Ignored.}
+}
+\if{html}{\out{</div>}}
 }
 }
 \if{html}{\out{<hr>}}

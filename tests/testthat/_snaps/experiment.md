@@ -53,6 +53,17 @@
       Error in `sanity_check()`:
       ! Please check the data consistency.
 
+# print experiemnt
+
+    Code
+      exp
+    Message
+      i ===== Experiment Object =====
+      i Name: "my_experiment"
+      i Expression Matrix: 3 samples, 3 variables
+      i Sample Information Fields: group
+      i Variable Information Fields: type
+
 # filter samples
 
     Code
